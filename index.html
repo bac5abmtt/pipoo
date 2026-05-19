@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>—</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&family=Karla:wght@300;400&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #F7F5F2;
+      --ink: #111010;
+      --mid: #888580;
+      --rule: #D9D6D0;
+      --serif: 'EB Garamond', Georgia, serif;
+      --sans: 'Karla', sans-serif;
+      --sidebar: 210px;
+    }
+
+    html,
+    body {
+      height: 100%;
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-weight: 300;
+    }
+
+    /* ── FILM GRAIN OVERLAY ── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      pointer-events: none;
+      opacity: .038;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      background-size: 180px 180px;
+      animation: grain 0.8s steps(1) infinite;
+    }
+
+    @keyframes grain {
+      0% {
+        background-position: 0% 0%;
+      }
+
+      10% {
+        background-position: -5% -10%;
+      }
+
+      20% {
+        background-position: -15% 5%;
+      }
+
+      30% {
+        background-position: 7% -25%;
+      }
+
+      40% {
+        background-position: -5% 25%;
+      }
+
+      50% {
+        background-position: -15% 10%;
+      }
+
+      60% {
+        background-position: 15% -25%;
+      }
+
+      70% {
+        background-position: 0% 15%;
+      }
+
+      80% {
+        background-position: 3% 35%;
+      }
+
+      90% {
+        background-position: -18% 10%;
+      }
+
+      100% {
+        background-position: 0% 0%;
+      }
+    }
+
+    /* ══════════════════ SHELL ══════════════════ */
+    .shell {
+      display: flex;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+    }
+
+    /* ══════════════════ SIDEBAR ══════════════════ */
+    .sidebar {
+      width: var(--sidebar);
+      flex-shrink: 0;
+      border-right: 1px solid var(--rule);
+      display: flex;
+      flex-direction: column;
+      padding: 36px 28px;
+      height: 100vh;
+    }
+
+    .logo {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 16px;
+      letter-spacing: .02em;
+      color: var(--ink);
+      text-decoration: none;
+      margin-bottom: 52px;
+      display: block;
+    }
+
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      text-align: left;
+      font-family: var(--sans);
+      font-size: 11px;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+      color: var(--rule);
+      cursor: pointer;
+      padding: 8px 0 8px 22px;
+      transition: color .2s;
+      position: relative;
+    }
+
+    .nav-btn::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0;
+      height: 1px;
+      background: var(--ink);
+      transition: width .3s;
+    }
+
+    .nav-btn.active {
+      color: var(--ink);
+    }
+
+    .nav-btn.active::before {
+      width: 14px;
+    }
+
+    .sidebar-foot {
+      margin-top: auto;
+      font-size: 10px;
+      letter-spacing: .06em;
+      color: var(--rule);
+      line-height: 2;
+    }
+
+    /* ══════════════════ MAIN ══════════════════ */
+    .main {
+      flex: 1;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .panel {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s;
+    }
+
+    .panel.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* ── panel header ── */
+    .pan-head {
+      padding: 0 48px;
+      height: 64px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .pan-title {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 22px;
+      font-weight: 400;
+    }
+
+    .pan-count {
+      font-size: 11px;
+      letter-spacing: .1em;
+      color: var(--rule);
+    }
+
+    .pan-arrows {
+      margin-left: auto;
+      display: flex;
+      gap: 2px;
+    }
+
+    .arr-btn {
+      background: none;
+      border: 1px solid var(--rule);
+      color: var(--mid);
+      width: 30px;
+      height: 30px;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .2s;
+    }
+
+    .arr-btn:hover:not(:disabled) {
+      border-color: var(--ink);
+      color: var(--ink);
+    }
+
+    .arr-btn:disabled {
+      opacity: .22;
+      cursor: default;
+    }
+
+    /* sub-tab bar (inside tranh panel) */
+    .sub-bar {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      padding: 0 48px;
+      height: 44px;
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .sub-btn {
+      background: none;
+      border: none;
+      font-family: var(--sans);
+      font-size: 10px;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+      color: var(--rule);
+      cursor: pointer;
+      padding: 0 0 2px 0;
+      margin-right: 28px;
+      border-bottom: 1px solid transparent;
+      transition: color .2s, border-color .2s;
+    }
+
+    .sub-btn.active {
+      color: var(--ink);
+      border-bottom-color: var(--ink);
+    }
+
+    .sub-count-inline {
+      font-size: 11px;
+      letter-spacing: .1em;
+      color: var(--rule);
+      margin-left: auto;
+    }
+
+    /* ── sub-panels ── */
+    .sub-panels {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sub-panel {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s;
+    }
+
+    .sub-panel.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .gallery-vp {
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .gallery-strip {
+      display: flex;
+      align-items: stretch;
+      height: 100%;
+      gap: 10px;
+      padding: 18px 48px;
+      will-change: transform;
+      transition: transform .48s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    .card {
+      flex-shrink: 0;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      background: var(--rule);
+    }
+
+    .card img {
+      height: 100%;
+      width: auto;
+      display: block;
+      object-fit: cover;
+      filter: grayscale(10%);
+      transition: transform .65s cubic-bezier(.25, .46, .45, .94), filter .4s;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .card:hover img {
+      transform: scale(1.04);
+      filter: grayscale(0%);
+    }
+
+    .card-cap {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 28px 12px 10px;
+      background: linear-gradient(transparent, rgba(17, 16, 16, .5));
+      opacity: 0;
+      transition: opacity .3s;
+    }
+
+    .card:hover .card-cap {
+      opacity: 1;
+    }
+
+    .card-cap span {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 12px;
+      color: rgba(255, 255, 255, .9);
+    }
+
+    .ph {
+      flex-shrink: 0;
+      height: 100%;
+      background: #ECEAE6;
+      animation: pulse 2.2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: .4
+      }
+
+      50% {
+        opacity: .8
+      }
+    }
+
+    .dots {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 5px;
+      pointer-events: none;
+    }
+
+    .dot {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--rule);
+      transition: background .3s, transform .3s;
+    }
+
+    .dot.on {
+      background: var(--ink);
+      transform: scale(1.4);
+    }
+
+    /* sub-panel header row (count + arrows) */
+    .sub-head {
+      padding: 0 48px;
+      height: 44px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .sub-count {
+      font-size: 11px;
+      letter-spacing: .1em;
+      color: var(--rule);
+    }
+
+    .sub-arrows {
+      margin-left: auto;
+      display: flex;
+      gap: 2px;
+    }
+
+    /* ══════════════════ ABOUT ══════════════════ */
+    .about-body {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      padding: 48px 64px;
+      gap: 64px;
+      overflow: hidden;
+    }
+
+    .about-photo {
+      flex-shrink: 0;
+      width: 240px;
+      height: 100%;
+      max-height: 360px;
+      overflow: hidden;
+      background: #ECEAE6;
+      position: relative;
+    }
+
+    .about-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(15%);
+      display: block;
+    }
+
+    .about-photo-ph {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .about-photo-ph svg {
+      opacity: .18;
+    }
+
+    .about-text {
+      flex: 1;
+    }
+
+    .about-label {
+      font-size: 10px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--rule);
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .about-name {
+      font-family: var(--serif);
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 400;
+      line-height: 1.05;
+      letter-spacing: -.01em;
+      margin-bottom: 24px;
+    }
+
+    .about-name em {
+      font-style: italic;
+      color: var(--mid);
+    }
+
+    .about-bio {
+      font-size: 14px;
+      line-height: 1.85;
+      color: #3A3836;
+      max-width: 480px;
+    }
+
+    .about-bio p+p {
+      margin-top: 14px;
+    }
+
+    .about-loc {
+      margin-top: 28px;
+      font-size: 11px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--rule);
+    }
+
+    /* ══════════════════ MUSIC PANEL ══════════════════ */
+    .music-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 40px 56px;
+      gap: 0;
+      overflow: hidden;
+    }
+
+    .music-now {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 0 28px;
+      gap: 6px;
+      border-bottom: 1px solid var(--rule);
+      flex-shrink: 0;
+    }
+
+    .music-now-label {
+      font-size: 9px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--rule);
+    }
+
+    .music-now-title {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--ink);
+      text-align: center;
+      max-width: 480px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* waveform visualiser (CSS only) */
+    .waveform {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      height: 24px;
+      margin: 8px 0 0;
+    }
+
+    .wave-bar {
+      width: 2px;
+      background: var(--rule);
+      border-radius: 1px;
+      animation: wave 1.2s ease-in-out infinite;
+      transform-origin: bottom;
+    }
+
+    .wave-bar:nth-child(1) {
+      height: 6px;
+      animation-delay: 0s;
+    }
+
+    .wave-bar:nth-child(2) {
+      height: 14px;
+      animation-delay: .1s;
+    }
+
+    .wave-bar:nth-child(3) {
+      height: 20px;
+      animation-delay: .2s;
+    }
+
+    .wave-bar:nth-child(4) {
+      height: 10px;
+      animation-delay: .3s;
+    }
+
+    .wave-bar:nth-child(5) {
+      height: 18px;
+      animation-delay: .15s;
+    }
+
+    .wave-bar:nth-child(6) {
+      height: 8px;
+      animation-delay: .25s;
+    }
+
+    .wave-bar:nth-child(7) {
+      height: 16px;
+      animation-delay: .05s;
+    }
+
+    @keyframes wave {
+
+      0%,
+      100% {
+        transform: scaleY(1);
+      }
+
+      50% {
+        transform: scaleY(.3);
+      }
+    }
+
+    .waveform.paused .wave-bar {
+      animation-play-state: paused;
+    }
+
+    .waveform.playing .wave-bar {
+      background: var(--ink);
+    }
+
+    /* controls */
+    .music-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px 0;
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .mc-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--mid);
+      font-size: 18px;
+      padding: 4px 8px;
+      transition: color .2s;
+      line-height: 1;
+      font-family: var(--sans);
+    }
+
+    .mc-btn:hover {
+      color: var(--ink);
+    }
+
+    .mc-btn.play {
+      width: 40px;
+      height: 40px;
+      border: 1px solid var(--rule);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: var(--ink);
+      transition: all .2s;
+    }
+
+    .mc-btn.play:hover {
+      border-color: var(--ink);
+      background: var(--ink);
+      color: var(--bg);
+    }
+
+    /* progress bar */
+    .music-progress {
+      padding: 0;
+      flex-shrink: 0;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 1px;
+      background: var(--rule);
+      position: relative;
+      cursor: pointer;
+      margin-bottom: 8px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--ink);
+      width: 0%;
+      transition: width .5s linear;
+      pointer-events: none;
+    }
+
+    .progress-times {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      letter-spacing: .06em;
+      color: var(--rule);
+    }
+
+    /* playlist */
+    .music-list {
+      flex: 1;
+      overflow-y: auto;
+      margin-top: 20px;
+      scrollbar-width: none;
+    }
+
+    .music-list::-webkit-scrollbar {
+      display: none;
+    }
+
+    .music-track {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--rule);
+      cursor: pointer;
+      transition: opacity .2s;
+    }
+
+    .music-track:hover {
+      opacity: .7;
+    }
+
+    .music-track.active .track-name {
+      color: var(--ink);
+    }
+
+    .music-track.active .track-num {
+      color: var(--ink);
+    }
+
+    .track-num {
+      font-size: 10px;
+      letter-spacing: .08em;
+      color: var(--rule);
+      width: 20px;
+      flex-shrink: 0;
+      text-align: right;
+    }
+
+    .track-name {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 15px;
+      color: var(--mid);
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .track-dur {
+      font-size: 10px;
+      color: var(--rule);
+      flex-shrink: 0;
+    }
+
+    .music-empty {
+      padding: 40px 0;
+      text-align: center;
+      font-size: 12px;
+      letter-spacing: .08em;
+      color: var(--rule);
+    }
+
+    /* ══════════════════ LIGHTBOX ══════════════════ */
+    .lb {
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      background: rgba(17, 16, 16, .97);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s;
+    }
+
+    .lb.on {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .lb>img {
+      max-width: 90vw;
+      max-height: 88vh;
+      object-fit: contain;
+      filter: grayscale(8%);
+      transform: scale(.97);
+      transition: transform .35s;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .lb.on>img {
+      transform: scale(1);
+    }
+
+    .lb-x {
+      position: absolute;
+      top: 24px;
+      right: 32px;
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .25);
+      background: none;
+      border: none;
+      font-family: var(--sans);
+      cursor: pointer;
+      transition: color .2s;
+      padding: 8px;
+    }
+
+    .lb-x:hover {
+      color: #fff;
+    }
+
+    .lb-cap {
+      position: absolute;
+      bottom: 28px;
+      left: 40px;
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 15px;
+      color: rgba(255, 255, 255, .28);
+    }
+
+    .lb-n {
+      position: absolute;
+      bottom: 32px;
+      right: 40px;
+      font-size: 10px;
+      letter-spacing: .1em;
+      color: rgba(255, 255, 255, .16);
+    }
+
+    .lb-prev,
+    .lb-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: 1px solid rgba(255, 255, 255, .1);
+      color: rgba(255, 255, 255, .25);
+      width: 40px;
+      height: 40px;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .2s;
+    }
+
+    .lb-prev:hover,
+    .lb-next:hover {
+      border-color: rgba(255, 255, 255, .4);
+      color: #fff;
+    }
+
+    .lb-prev {
+      left: 20px;
+    }
+
+    .lb-next {
+      right: 20px;
+    }
+
+    /* ══════════════════ MOBILE ══════════════════ */
+    @media (max-width: 700px) {
+
+      html,
+      body {
+        overflow: auto;
+        height: auto;
+      }
+
+      .shell {
+        flex-direction: column;
+        height: auto;
+      }
+
+      .sidebar {
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--rule);
+        padding: 16px 20px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .logo {
+        margin-bottom: 0;
+        margin-right: auto;
+      }
+
+      .nav {
+        flex-direction: row;
+        margin-left: 12px;
+      }
+
+      .nav-btn {
+        padding: 5px 10px;
+        font-size: 10px;
+      }
+
+      .nav-btn::before {
+        display: none;
+      }
+
+      .nav-btn.active {
+        color: var(--ink);
+        border-bottom: 1px solid var(--ink);
+      }
+
+      .sidebar-foot {
+        display: none;
+      }
+
+      .main {
+        height: auto;
+        overflow: visible;
+      }
+
+      .panel {
+        position: static;
+        opacity: 0;
+        pointer-events: none;
+        height: auto;
+        display: none;
+      }
+
+      .panel.active {
+        opacity: 1;
+        pointer-events: all;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .pan-head {
+        height: 48px;
+        padding: 0 20px;
+      }
+
+      .sub-bar {
+        padding: 0 20px;
+      }
+
+      .sub-head {
+        padding: 0 20px;
+        height: 36px;
+      }
+
+      .sub-panels {
+        height: 52vw;
+      }
+
+      .sub-panel {
+        position: absolute;
+      }
+
+      .gallery-strip {
+        padding: 10px 20px;
+        gap: 8px;
+      }
+
+      .dots {
+        display: none;
+      }
+
+      .about-body {
+        flex-direction: column;
+        padding: 24px 20px;
+        gap: 20px;
+        align-items: flex-start;
+        overflow: auto;
+      }
+
+      .about-photo {
+        width: 100%;
+        height: 56vw;
+        max-height: 260px;
+      }
+
+      .about-name {
+        font-size: 28px;
+      }
+
+      .about-bio {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="shell">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <a class="logo" href="#">tên của bạn</a>
+      <nav class="nav">
+        <button class="nav-btn active" onclick="sw('tranh', this)">tranh vẽ</button>
+        <button class="nav-btn" onclick="sw('doi',   this)">đời sống</button>
+        <button class="nav-btn" onclick="sw('about', this)">about</button>
+        <button class="nav-btn" onclick="sw('music', this)">music</button>
+      </nav>
+      <div class="sidebar-foot">© 2025<br />Hà Nội</div>
+    </aside>
+
+    <main class="main">
+
+      <!-- ════ TRANH VẼ ════ -->
+      <div class="panel active" id="panel-tranh">
+
+        <!-- main header with arrows -->
+        <div class="pan-head">
+          <h2 class="pan-title">tranh vẽ</h2>
+          <div class="pan-arrows">
+            <button class="arr-btn" id="prev-tranh" onclick="moveActive(-1)" disabled>←</button>
+            <button class="arr-btn" id="next-tranh" onclick="moveActive(1)">→</button>
+          </div>
+        </div>
+
+        <!-- sub-tab bar -->
+        <div class="sub-bar">
+          <button class="sub-btn active" onclick="swSub('artwork', this)">artwork</button>
+          <button class="sub-btn" onclick="swSub('practice', this)">practice</button>
+          <span class="sub-count-inline" id="c-active"></span>
+        </div>
+
+        <!-- sub-panels -->
+        <div class="sub-panels">
+
+          <!-- ARTWORK -->
+          <div class="sub-panel active" id="sub-artwork">
+            <div class="gallery-vp" id="vp1">
+              <div class="gallery-strip" id="g1">
+                <div class="ph" style="width:180px"></div>
+                <div class="ph" style="width:230px"></div>
+                <div class="ph" style="width:160px"></div>
+                <div class="ph" style="width:270px"></div>
+                <div class="ph" style="width:200px"></div>
+              </div>
+              <div class="dots" id="dots1"></div>
+            </div>
+          </div>
+
+          <!-- PRACTICE -->
+          <div class="sub-panel" id="sub-practice">
+            <div class="gallery-vp" id="vp3">
+              <div class="gallery-strip" id="g3">
+                <div class="ph" style="width:200px"></div>
+                <div class="ph" style="width:170px"></div>
+                <div class="ph" style="width:240px"></div>
+                <div class="ph" style="width:190px"></div>
+                <div class="ph" style="width:220px"></div>
+              </div>
+              <div class="dots" id="dots3"></div>
+            </div>
+          </div>
+
+        </div><!-- /sub-panels -->
+      </div><!-- /panel-tranh -->
+
+      <!-- ════ ĐỜI SỐNG ════ -->
+      <div class="panel" id="panel-doi">
+        <div class="pan-head">
+          <h2 class="pan-title">đời sống</h2>
+          <span class="pan-count" id="c2"></span>
+          <div class="pan-arrows">
+            <button class="arr-btn" id="prev2" onclick="move('g2',-1)" disabled>←</button>
+            <button class="arr-btn" id="next2" onclick="move('g2', 1)">→</button>
+          </div>
+        </div>
+        <div class="gallery-vp" id="vp2">
+          <div class="gallery-strip" id="g2">
+            <div class="ph" style="width:250px"></div>
+            <div class="ph" style="width:180px"></div>
+            <div class="ph" style="width:290px"></div>
+            <div class="ph" style="width:200px"></div>
+            <div class="ph" style="width:230px"></div>
+          </div>
+          <div class="dots" id="dots2"></div>
+        </div>
+      </div>
+
+      <!-- ════ ABOUT ════ -->
+      <div class="panel" id="panel-about">
+        <div class="pan-head">
+          <h2 class="pan-title">about</h2>
+        </div>
+        <div class="about-body">
+          <div class="about-photo">
+            <img src="" alt="ảnh của tôi" onerror="this.style.display='none'" />
+            <div class="about-photo-ph">
+              <svg width="40" height="50" viewBox="0 0 40 50" fill="none">
+                <rect x="2" y="2" width="36" height="46" rx="1" stroke="#7A7A7A" stroke-width=".8" fill="none" />
+                <circle cx="20" cy="20" r="8" stroke="#C8C4BC" stroke-width=".7" fill="none" />
+                <line x1="8" y1="36" x2="32" y2="36" stroke="#C8C4BC" stroke-width=".5" />
+                <line x1="8" y1="41" x2="24" y2="41" stroke="#C8C4BC" stroke-width=".5" />
+              </svg>
+            </div>
+          </div>
+          <div class="about-text">
+            <span class="about-label">về tôi</span>
+            <h2 class="about-name">Tên của<br /><em>bạn.</em></h2>
+            <div class="about-bio">
+              <p>Viết vài dòng giới thiệu bản thân ở đây — bạn là ai, bạn vẽ vì điều gì, phong cách của bạn hình thành
+                như thế nào.</p>
+              <p>Đây là nơi để kể câu chuyện của mình một cách tự nhiên, không cần quá chỉn chu.</p>
+            </div>
+            <p class="about-loc">Hà Nội, Việt Nam</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ════ MUSIC ════ -->
+      <div class="panel" id="panel-music">
+        <div class="pan-head">
+          <h2 class="pan-title">music</h2>
+          <span class="pan-count" id="music-count"></span>
+        </div>
+        <div class="music-body">
+
+          <!-- Now playing -->
+          <div class="music-now">
+            <span class="music-now-label">đang phát</span>
+            <span class="music-now-title" id="now-title">—</span>
+            <div class="waveform paused" id="waveform">
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+            </div>
+          </div>
+
+          <!-- Controls -->
+          <div class="music-controls">
+            <button class="mc-btn" onclick="musicPrev()" title="Bài trước">&#9664;&#9664;</button>
+            <button class="mc-btn play" id="play-btn" onclick="togglePlay()">&#9654;</button>
+            <button class="mc-btn" onclick="musicNext()" title="Bài tiếp">&#9654;&#9654;</button>
+            <button class="mc-btn" id="shuffle-btn" onclick="toggleShuffle()" title="Ngẫu nhiên"
+              style="font-size:13px;opacity:.4;">&#8646;</button>
+          </div>
+
+          <!-- Progress -->
+          <div class="music-progress">
+            <div class="progress-track" id="progress-track" onclick="seekTo(event)">
+              <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div class="progress-times">
+              <span id="time-cur">0:00</span>
+              <span id="time-dur">0:00</span>
+            </div>
+          </div>
+
+          <!-- Playlist -->
+          <div class="music-list" id="music-list">
+            <div class="music-empty">Điền Folder ID nhạc vào file HTML để tải playlist.</div>
+          </div>
+
+        </div>
+        <audio id="audio-player" preload="metadata"></audio>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div class="lb" id="lb">
+    <button class="lb-x" onclick="closeLb()">đóng ×</button>
+    <img id="lbi" src="" alt="" />
+    <p class="lb-cap" id="lbc"></p>
+    <p class="lb-n" id="lbn"></p>
+    <button class="lb-prev" onclick="lbNav(-1)">←</button>
+    <button class="lb-next" onclick="lbNav(1)">→</button>
+  </div>
+
+  <script>
+    /* ══ STATE ══ */
+    const state = {
+      g1: { pos: 0, total: 0, items: [] },
+      g2: { pos: 0, total: 0, items: [] },
+      g3: { pos: 0, total: 0, items: [] }
+    };
+
+    /* map gid → button indices */
+    const gMap = {
+      g1: { prev: 'prev1', next: 'next1', dots: 'dots1' },
+      g2: { prev: 'prev2', next: 'next2', dots: 'dots2' },
+      g3: { prev: 'prev3', next: 'next3', dots: 'dots3' }
+    };
+
+    /* returns gid of currently active sub-panel */
+    function activeGid() {
+      return document.getElementById('sub-artwork').classList.contains('active') ? 'g1' : 'g3';
+    }
+
+    /* update shared tranh arrows based on active gid */
+    function updateTrahnArrows(gid) {
+      const s = state[gid];
+      const maxPos = Math.max(0, s.total - visibleCount(gid));
+      document.getElementById('prev-tranh').disabled = s.pos <= 0;
+      document.getElementById('next-tranh').disabled = s.pos >= maxPos;
+      // count
+      document.getElementById('c-active').textContent = s.total ? s.total + ' tác phẩm' : '';
+    }
+
+    /* move active sub-gallery */
+    function moveActive(dir) {
+      move(activeGid(), dir);
+    }
+
+    /* ── MAIN TAB ── */
+    function sw(id, btn) {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('panel-' + id).classList.add('active');
+      btn.classList.add('active');
+      if (id === 'doi') raf(() => recalc('g2'));
+      if (id === 'tranh') {
+        const active = document.querySelector('.sub-panel.active');
+        const gid = active && active.id === 'sub-practice' ? 'g3' : 'g1';
+        raf(() => recalc(gid));
+      }
+    }
+
+    /* ── SUB TAB ── */
+    function swSub(id, btn) {
+      document.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('sub-' + id).classList.add('active');
+      btn.classList.add('active');
+      const gid = id === 'artwork' ? 'g1' : 'g3';
+      raf(() => { recalc(gid); updateTrahnArrows(gid); });
+    }
+
+    function raf(fn) { requestAnimationFrame(() => requestAnimationFrame(fn)); }
+
+    /* ── GALLERY ── */
+    function visibleCount(gid) {
+      const vp = document.getElementById(gid).closest('.gallery-vp');
+      const first = document.getElementById(gid).querySelector('.card');
+      if (!first) return 3;
+      return Math.max(1, Math.floor((vp.offsetWidth - 96) / (first.offsetWidth + 10)));
+    }
+
+    function move(gid, dir) {
+      const s = state[gid];
+      s.pos = Math.min(Math.max(0, s.total - visibleCount(gid)), Math.max(0, s.pos + dir));
+      applyPos(gid);
+    }
+
+    function applyPos(gid) {
+      const s = state[gid];
+      const strip = document.getElementById(gid);
+      const cards = strip.querySelectorAll('.card');
+      if (!cards.length) return;
+      let offset = 0;
+      for (let i = 0; i < s.pos; i++) offset += cards[i].offsetWidth + 10;
+      strip.style.transform = `translateX(-${offset}px)`;
+      const maxPos = Math.max(0, s.total - visibleCount(gid));
+      // for doi, use dedicated buttons; for tranh sub-galleries use shared buttons
+      if (gid === 'g2') {
+        document.getElementById('prev2').disabled = s.pos <= 0;
+        document.getElementById('next2').disabled = s.pos >= maxPos;
+      } else if (gid === 'g1' || gid === 'g3') {
+        updateTrahnArrows(gid);
+      }
+      updateDots(gid);
+    }
+
+    function buildDots(gid) {
+      const c = document.getElementById(gMap[gid].dots);
+      const pages = Math.max(1, state[gid].total - visibleCount(gid) + 1);
+      c.innerHTML = '';
+      for (let i = 0; i < pages; i++) {
+        const d = document.createElement('div');
+        d.className = 'dot' + (i === 0 ? ' on' : '');
+        c.appendChild(d);
+      }
+    }
+
+    function updateDots(gid) {
+      document.getElementById(gMap[gid].dots).querySelectorAll('.dot')
+        .forEach((d, i) => d.classList.toggle('on', i === state[gid].pos));
+    }
+
+    function recalc(gid) { if (state[gid].total > 0) { buildDots(gid); applyPos(gid); } }
+
+    /* ── SCROLL WHEEL ── */
+    document.querySelectorAll('.gallery-vp').forEach(vp => {
+      const gid = vp.querySelector('.gallery-strip').id;
+      vp.addEventListener('wheel', e => {
+        e.preventDefault(); e.stopPropagation();
+        const d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+        if (d > 15) move(gid, 1); else if (d < -15) move(gid, -1);
+      }, { passive: false });
+    });
+
+    /* ── TOUCH SWIPE ── */
+    document.querySelectorAll('.gallery-vp').forEach(vp => {
+      const gid = vp.querySelector('.gallery-strip').id;
+      let tx = null;
+      vp.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+      vp.addEventListener('touchend', e => {
+        if (tx === null) return;
+        const dx = e.changedTouches[0].clientX - tx;
+        if (Math.abs(dx) > 40) move(gid, dx < 0 ? 1 : -1);
+        tx = null;
+      }, { passive: true });
+    });
+
+    /* ── LIGHTBOX ── */
+    let pool = [], cur = 0;
+    function openLb(items, i) { pool = items; cur = i; setLb(); document.getElementById('lb').classList.add('on'); document.body.style.overflow = 'hidden'; }
+    function setLb() { document.getElementById('lbi').src = pool[cur].src; document.getElementById('lbc').textContent = pool[cur].title; document.getElementById('lbn').textContent = (cur + 1) + ' / ' + pool.length; }
+    function closeLb() { document.getElementById('lb').classList.remove('on'); document.body.style.overflow = ''; }
+    function lbNav(d) { cur = (cur + d + pool.length) % pool.length; setLb(); }
+    document.getElementById('lb').addEventListener('click', e => { if (e.target === e.currentTarget) closeLb(); });
+    document.addEventListener('keydown', e => {
+      if (!document.getElementById('lb').classList.contains('on')) return;
+      if (e.key === 'Escape') closeLb();
+      if (e.key === 'ArrowLeft') lbNav(-1);
+      if (e.key === 'ArrowRight') lbNav(1);
+    });
+    let lbTx = null;
+    document.getElementById('lb').addEventListener('touchstart', e => { lbTx = e.touches[0].clientX; }, { passive: true });
+    document.getElementById('lb').addEventListener('touchend', e => { if (lbTx === null) return; const dx = e.changedTouches[0].clientX - lbTx; if (Math.abs(dx) > 40) lbNav(dx < 0 ? 1 : -1); lbTx = null; }, { passive: true });
+
+    /* ── RENDER ── */
+    function render(gid, cid, items) {
+      const strip = document.getElementById(gid);
+      if (cid) document.getElementById(cid).textContent = items.length + ' tác phẩm';
+      state[gid] = { pos: 0, total: items.length, items };
+      strip.innerHTML = '';
+      items.forEach((item, i) => {
+        const d = document.createElement('div');
+        d.className = 'card';
+        d.innerHTML = `<img src="${item.src}" alt="${item.title}" loading="lazy"/><div class="card-cap"><span>${item.title}</span></div>`;
+        d.addEventListener('click', () => openLb(items, i));
+        strip.appendChild(d);
+      });
+      raf(() => {
+        buildDots(gid); applyPos(gid);
+        if (gid === 'g1' || gid === 'g3') updateTrahnArrows(gid);
+      });
+    }
+
+    /* ── GOOGLE DRIVE ── */
+    const API_KEY = 'AIzaSyDXaLyhKz9354S5GNU7vaC-imFnVcVprLI';
+    const FOLDER_ARTWORK = 'PASTE_FOLDER_ID_ARTWORK';   // ← Folder ID artwork
+    const FOLDER_PRACTICE = 'PASTE_FOLDER_ID_PRACTICE';  // ← Folder ID practice
+    const FOLDER_DOI = 'PASTE_FOLDER_ID_DOI_SONG';  // ← Folder ID đời sống
+    const FOLDER_MUSIC = '15SU-eZmBt9qOb3hn4Mz506UgCLecTRu4';      // ← Folder ID nhạc MP3
+
+    async function fetchFolder(id) {
+      if (!id || id.startsWith('PASTE_')) return [];
+      const r = await fetch(`https://www.googleapis.com/drive/v3/files?q='${id}'+in+parents+and+mimeType+contains+'image/'&fields=files(id,name)&orderBy=name&key=${API_KEY}`);
+      const d = await r.json();
+      if (d.error) { console.warn(d.error.message); return []; }
+      return (d.files || []).map(f => ({
+        src: `https://drive.google.com/thumbnail?id=${f.id}&sz=w1200`,
+        title: f.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ')
+      }));
+    }
+
+    async function fetchMusicFolder(id) {
+      if (!id || id.startsWith('PASTE_')) return [];
+      const r = await fetch(`https://www.googleapis.com/drive/v3/files?q='${id}'+in+parents+and+(mimeType+contains+'audio/')&fields=files(id,name)&orderBy=name&key=${API_KEY}`);
+      const d = await r.json();
+      if (d.error) { console.warn(d.error.message); return []; }
+      return (d.files || []).map(f => ({
+        id: f.id,
+        title: f.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' '),
+        src: `https://docs.google.com/uc?export=open&id=${f.id}`
+      }));
+    }
+
+    async function autoLoad() {
+      if (API_KEY === 'PASTE_YOUR_API_KEY_HERE') return;
+      const [a, b, c, m] = await Promise.all([
+        fetchFolder(FOLDER_ARTWORK),
+        fetchFolder(FOLDER_DOI),
+        fetchFolder(FOLDER_PRACTICE),
+        fetchMusicFolder(FOLDER_MUSIC)
+      ]);
+      if (a.length) render('g1', null, a);
+      if (b.length) render('g2', 'c2', b);
+      if (c.length) render('g3', null, c);
+      if (m.length) buildPlaylist(m);
+    }
+
+    /* ══ MUSIC PLAYER ══ */
+    let tracks = [], trackIdx = 0, shuffled = false;
+    const audio = document.getElementById('audio-player');
+
+    function buildPlaylist(items) {
+      tracks = items;
+      document.getElementById('music-count').textContent = items.length + ' bài';
+      const list = document.getElementById('music-list');
+      list.innerHTML = '';
+      items.forEach((t, i) => {
+        const row = document.createElement('div');
+        row.className = 'music-track' + (i === 0 ? ' active' : '');
+        row.id = 'track-' + i;
+        row.innerHTML = `
+      <span class="track-num">${String(i + 1).padStart(2, '0')}</span>
+      <span class="track-name">${t.title}</span>
+      <span class="track-dur" id="dur-${i}">—</span>`;
+        row.addEventListener('click', () => playTrack(i));
+        list.appendChild(row);
+      });
+      // load first track silently
+      loadTrack(0, false);
+    }
+
+    function loadTrack(i, autoplay = true) {
+      trackIdx = i;
+      const t = tracks[i];
+      audio.src = t.src;
+      document.getElementById('now-title').textContent = t.title;
+      document.querySelectorAll('.music-track').forEach((r, j) =>
+        r.classList.toggle('active', j === i));
+      // scroll track into view
+      const row = document.getElementById('track-' + i);
+      if (row) row.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      if (autoplay) audio.play().catch(() => { });
+      updatePlayBtn();
+    }
+
+    function playTrack(i) { loadTrack(i, true); }
+
+    function togglePlay() {
+      if (audio.paused) audio.play().catch(() => { });
+      else audio.pause();
+    }
+
+    function musicPrev() {
+      const i = (trackIdx - 1 + tracks.length) % tracks.length;
+      loadTrack(i, true);
+    }
+
+    function musicNext() {
+      let i;
+      if (shuffled) {
+        do { i = Math.floor(Math.random() * tracks.length); } while (i === trackIdx && tracks.length > 1);
+      } else {
+        i = (trackIdx + 1) % tracks.length;
+      }
+      loadTrack(i, true);
+    }
+
+    function toggleShuffle() {
+      shuffled = !shuffled;
+      document.getElementById('shuffle-btn').style.opacity = shuffled ? '1' : '.4';
+    }
+
+    function seekTo(e) {
+      const track = document.getElementById('progress-track');
+      const pct = e.offsetX / track.offsetWidth;
+      if (audio.duration) audio.currentTime = pct * audio.duration;
+    }
+
+    function fmtTime(s) {
+      if (!s || isNaN(s)) return '0:00';
+      const m = Math.floor(s / 60), sec = Math.floor(s % 60);
+      return m + ':' + String(sec).padStart(2, '0');
+    }
+
+    function updatePlayBtn() {
+      document.getElementById('play-btn').innerHTML = audio.paused ? '&#9654;' : '&#9646;&#9646;';
+      const wf = document.getElementById('waveform');
+      wf.classList.toggle('playing', !audio.paused);
+      wf.classList.toggle('paused', audio.paused);
+    }
+
+    audio.addEventListener('play', updatePlayBtn);
+    audio.addEventListener('pause', updatePlayBtn);
+    audio.addEventListener('ended', musicNext);
+
+    audio.addEventListener('timeupdate', () => {
+      if (!audio.duration) return;
+      const pct = (audio.currentTime / audio.duration * 100).toFixed(1);
+      document.getElementById('progress-fill').style.width = pct + '%';
+      document.getElementById('time-cur').textContent = fmtTime(audio.currentTime);
+      document.getElementById('time-dur').textContent = fmtTime(audio.duration);
+    });
+
+    audio.addEventListener('loadedmetadata', () => {
+      document.getElementById('time-dur').textContent = fmtTime(audio.duration);
+      // fill duration in playlist row
+      const dur = document.getElementById('dur-' + trackIdx);
+      if (dur) dur.textContent = fmtTime(audio.duration);
+    });
+
+    autoLoad();
+
+    window.addEventListener('resize', () => { ['g1', 'g2', 'g3'].forEach(recalc); });
+  </script>
+</body>
+
+</html>
