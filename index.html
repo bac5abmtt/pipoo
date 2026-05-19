@@ -528,263 +528,6 @@
       color: var(--rule);
     }
 
-    /* ══════════════════ MUSIC PANEL ══════════════════ */
-    .music-body {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      padding: 40px 56px;
-      gap: 0;
-      overflow: hidden;
-    }
-
-    .music-now {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 32px 0 28px;
-      gap: 6px;
-      border-bottom: 1px solid var(--rule);
-      flex-shrink: 0;
-    }
-
-    .music-now-label {
-      font-size: 9px;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      color: var(--rule);
-    }
-
-    .music-now-title {
-      font-family: var(--serif);
-      font-style: italic;
-      font-size: 22px;
-      font-weight: 400;
-      color: var(--ink);
-      text-align: center;
-      max-width: 480px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    /* waveform visualiser (CSS only) */
-    .waveform {
-      display: flex;
-      align-items: center;
-      gap: 3px;
-      height: 24px;
-      margin: 8px 0 0;
-    }
-
-    .wave-bar {
-      width: 2px;
-      background: var(--rule);
-      border-radius: 1px;
-      animation: wave 1.2s ease-in-out infinite;
-      transform-origin: bottom;
-    }
-
-    .wave-bar:nth-child(1) {
-      height: 6px;
-      animation-delay: 0s;
-    }
-
-    .wave-bar:nth-child(2) {
-      height: 14px;
-      animation-delay: .1s;
-    }
-
-    .wave-bar:nth-child(3) {
-      height: 20px;
-      animation-delay: .2s;
-    }
-
-    .wave-bar:nth-child(4) {
-      height: 10px;
-      animation-delay: .3s;
-    }
-
-    .wave-bar:nth-child(5) {
-      height: 18px;
-      animation-delay: .15s;
-    }
-
-    .wave-bar:nth-child(6) {
-      height: 8px;
-      animation-delay: .25s;
-    }
-
-    .wave-bar:nth-child(7) {
-      height: 16px;
-      animation-delay: .05s;
-    }
-
-    @keyframes wave {
-
-      0%,
-      100% {
-        transform: scaleY(1);
-      }
-
-      50% {
-        transform: scaleY(.3);
-      }
-    }
-
-    .waveform.paused .wave-bar {
-      animation-play-state: paused;
-    }
-
-    .waveform.playing .wave-bar {
-      background: var(--ink);
-    }
-
-    /* controls */
-    .music-controls {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 20px;
-      padding: 20px 0;
-      flex-shrink: 0;
-      border-bottom: 1px solid var(--rule);
-    }
-
-    .mc-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: var(--mid);
-      font-size: 18px;
-      padding: 4px 8px;
-      transition: color .2s;
-      line-height: 1;
-      font-family: var(--sans);
-    }
-
-    .mc-btn:hover {
-      color: var(--ink);
-    }
-
-    .mc-btn.play {
-      width: 40px;
-      height: 40px;
-      border: 1px solid var(--rule);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      color: var(--ink);
-      transition: all .2s;
-    }
-
-    .mc-btn.play:hover {
-      border-color: var(--ink);
-      background: var(--ink);
-      color: var(--bg);
-    }
-
-    /* progress bar */
-    .music-progress {
-      padding: 0;
-      flex-shrink: 0;
-    }
-
-    .progress-track {
-      width: 100%;
-      height: 1px;
-      background: var(--rule);
-      position: relative;
-      cursor: pointer;
-      margin-bottom: 8px;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: var(--ink);
-      width: 0%;
-      transition: width .5s linear;
-      pointer-events: none;
-    }
-
-    .progress-times {
-      display: flex;
-      justify-content: space-between;
-      font-size: 10px;
-      letter-spacing: .06em;
-      color: var(--rule);
-    }
-
-    /* playlist */
-    .music-list {
-      flex: 1;
-      overflow-y: auto;
-      margin-top: 20px;
-      scrollbar-width: none;
-    }
-
-    .music-list::-webkit-scrollbar {
-      display: none;
-    }
-
-    .music-track {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--rule);
-      cursor: pointer;
-      transition: opacity .2s;
-    }
-
-    .music-track:hover {
-      opacity: .7;
-    }
-
-    .music-track.active .track-name {
-      color: var(--ink);
-    }
-
-    .music-track.active .track-num {
-      color: var(--ink);
-    }
-
-    .track-num {
-      font-size: 10px;
-      letter-spacing: .08em;
-      color: var(--rule);
-      width: 20px;
-      flex-shrink: 0;
-      text-align: right;
-    }
-
-    .track-name {
-      font-family: var(--serif);
-      font-style: italic;
-      font-size: 15px;
-      color: var(--mid);
-      flex: 1;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .track-dur {
-      font-size: 10px;
-      color: var(--rule);
-      flex-shrink: 0;
-    }
-
-    .music-empty {
-      padding: 40px 0;
-      text-align: center;
-      font-size: 12px;
-      letter-spacing: .08em;
-      color: var(--rule);
-    }
-
     /* ══════════════════ LIGHTBOX ══════════════════ */
     .lb {
       position: fixed;
@@ -1030,7 +773,6 @@
         <button class="nav-btn active" onclick="sw('tranh', this)">tranh vẽ</button>
         <button class="nav-btn" onclick="sw('doi',   this)">đời sống</button>
         <button class="nav-btn" onclick="sw('about', this)">about</button>
-        <button class="nav-btn" onclick="sw('music', this)">music</button>
       </nav>
       <div class="sidebar-foot">© 2025<br />Hà Nội</div>
     </aside>
@@ -1140,58 +882,6 @@
             <p class="about-loc">Hà Nội, Việt Nam</p>
           </div>
         </div>
-      </div>
-
-      <!-- ════ MUSIC ════ -->
-      <div class="panel" id="panel-music">
-        <div class="pan-head">
-          <h2 class="pan-title">music</h2>
-          <span class="pan-count" id="music-count"></span>
-        </div>
-        <div class="music-body">
-
-          <!-- Now playing -->
-          <div class="music-now">
-            <span class="music-now-label">đang phát</span>
-            <span class="music-now-title" id="now-title">—</span>
-            <div class="waveform paused" id="waveform">
-              <div class="wave-bar"></div>
-              <div class="wave-bar"></div>
-              <div class="wave-bar"></div>
-              <div class="wave-bar"></div>
-              <div class="wave-bar"></div>
-              <div class="wave-bar"></div>
-              <div class="wave-bar"></div>
-            </div>
-          </div>
-
-          <!-- Controls -->
-          <div class="music-controls">
-            <button class="mc-btn" onclick="musicPrev()" title="Bài trước">&#9664;&#9664;</button>
-            <button class="mc-btn play" id="play-btn" onclick="togglePlay()">&#9654;</button>
-            <button class="mc-btn" onclick="musicNext()" title="Bài tiếp">&#9654;&#9654;</button>
-            <button class="mc-btn" id="shuffle-btn" onclick="toggleShuffle()" title="Ngẫu nhiên"
-              style="font-size:13px;opacity:.4;">&#8646;</button>
-          </div>
-
-          <!-- Progress -->
-          <div class="music-progress">
-            <div class="progress-track" id="progress-track" onclick="seekTo(event)">
-              <div class="progress-fill" id="progress-fill"></div>
-            </div>
-            <div class="progress-times">
-              <span id="time-cur">0:00</span>
-              <span id="time-dur">0:00</span>
-            </div>
-          </div>
-
-          <!-- Playlist -->
-          <div class="music-list" id="music-list">
-            <div class="music-empty">Điền Folder ID nhạc vào file HTML để tải playlist.</div>
-          </div>
-
-        </div>
-        <audio id="audio-player" preload="metadata"></audio>
       </div>
 
     </main>
@@ -1380,10 +1070,9 @@
 
     /* ── GOOGLE DRIVE ── */
     const API_KEY = 'AIzaSyDXaLyhKz9354S5GNU7vaC-imFnVcVprLI';
-    const FOLDER_ARTWORK = 'PASTE_FOLDER_ID_ARTWORK';   // ← Folder ID artwork
-    const FOLDER_PRACTICE = 'PASTE_FOLDER_ID_PRACTICE';  // ← Folder ID practice
-    const FOLDER_DOI = 'PASTE_FOLDER_ID_DOI_SONG';  // ← Folder ID đời sống
-    const FOLDER_MUSIC = '15SU-eZmBt9qOb3hn4Mz506UgCLecTRu4';      // ← Folder ID nhạc MP3
+    const FOLDER_ARTWORK = 'mKQXC4ECws6UCH4Nm8JtBGHpDPLtj';   // ← Folder ID artwork
+    const FOLDER_PRACTICE = '1Y9g3VJKei0iuD4Hng5IH-dHYyK3I4n3H';  // ← Folder ID practice
+    const FOLDER_DOI = '1E5FGJiSCLC1D6vYZjpViH7bkWmYpRNKb';  // ← Folder ID đời sống
 
     async function fetchFolder(id) {
       if (!id || id.startsWith('PASTE_')) return [];
@@ -1396,134 +1085,17 @@
       }));
     }
 
-    async function fetchMusicFolder(id) {
-      if (!id || id.startsWith('PASTE_')) return [];
-      const r = await fetch(`https://www.googleapis.com/drive/v3/files?q='${id}'+in+parents+and+(mimeType+contains+'audio/')&fields=files(id,name)&orderBy=name&key=${API_KEY}`);
-      const d = await r.json();
-      if (d.error) { console.warn(d.error.message); return []; }
-      return (d.files || []).map(f => ({
-        id: f.id,
-        title: f.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' '),
-        src: `https://docs.google.com/uc?export=open&id=${f.id}`
-      }));
-    }
-
     async function autoLoad() {
       if (API_KEY === 'PASTE_YOUR_API_KEY_HERE') return;
-      const [a, b, c, m] = await Promise.all([
+      const [a, b, c] = await Promise.all([
         fetchFolder(FOLDER_ARTWORK),
         fetchFolder(FOLDER_DOI),
         fetchFolder(FOLDER_PRACTICE),
-        fetchMusicFolder(FOLDER_MUSIC)
       ]);
       if (a.length) render('g1', null, a);
       if (b.length) render('g2', 'c2', b);
       if (c.length) render('g3', null, c);
-      if (m.length) buildPlaylist(m);
     }
-
-    /* ══ MUSIC PLAYER ══ */
-    let tracks = [], trackIdx = 0, shuffled = false;
-    const audio = document.getElementById('audio-player');
-
-    function buildPlaylist(items) {
-      tracks = items;
-      document.getElementById('music-count').textContent = items.length + ' bài';
-      const list = document.getElementById('music-list');
-      list.innerHTML = '';
-      items.forEach((t, i) => {
-        const row = document.createElement('div');
-        row.className = 'music-track' + (i === 0 ? ' active' : '');
-        row.id = 'track-' + i;
-        row.innerHTML = `
-      <span class="track-num">${String(i + 1).padStart(2, '0')}</span>
-      <span class="track-name">${t.title}</span>
-      <span class="track-dur" id="dur-${i}">—</span>`;
-        row.addEventListener('click', () => playTrack(i));
-        list.appendChild(row);
-      });
-      // load first track silently
-      loadTrack(0, false);
-    }
-
-    function loadTrack(i, autoplay = true) {
-      trackIdx = i;
-      const t = tracks[i];
-      audio.src = t.src;
-      document.getElementById('now-title').textContent = t.title;
-      document.querySelectorAll('.music-track').forEach((r, j) =>
-        r.classList.toggle('active', j === i));
-      // scroll track into view
-      const row = document.getElementById('track-' + i);
-      if (row) row.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-      if (autoplay) audio.play().catch(() => { });
-      updatePlayBtn();
-    }
-
-    function playTrack(i) { loadTrack(i, true); }
-
-    function togglePlay() {
-      if (audio.paused) audio.play().catch(() => { });
-      else audio.pause();
-    }
-
-    function musicPrev() {
-      const i = (trackIdx - 1 + tracks.length) % tracks.length;
-      loadTrack(i, true);
-    }
-
-    function musicNext() {
-      let i;
-      if (shuffled) {
-        do { i = Math.floor(Math.random() * tracks.length); } while (i === trackIdx && tracks.length > 1);
-      } else {
-        i = (trackIdx + 1) % tracks.length;
-      }
-      loadTrack(i, true);
-    }
-
-    function toggleShuffle() {
-      shuffled = !shuffled;
-      document.getElementById('shuffle-btn').style.opacity = shuffled ? '1' : '.4';
-    }
-
-    function seekTo(e) {
-      const track = document.getElementById('progress-track');
-      const pct = e.offsetX / track.offsetWidth;
-      if (audio.duration) audio.currentTime = pct * audio.duration;
-    }
-
-    function fmtTime(s) {
-      if (!s || isNaN(s)) return '0:00';
-      const m = Math.floor(s / 60), sec = Math.floor(s % 60);
-      return m + ':' + String(sec).padStart(2, '0');
-    }
-
-    function updatePlayBtn() {
-      document.getElementById('play-btn').innerHTML = audio.paused ? '&#9654;' : '&#9646;&#9646;';
-      const wf = document.getElementById('waveform');
-      wf.classList.toggle('playing', !audio.paused);
-      wf.classList.toggle('paused', audio.paused);
-    }
-
-    audio.addEventListener('play', updatePlayBtn);
-    audio.addEventListener('pause', updatePlayBtn);
-    audio.addEventListener('ended', musicNext);
-
-    audio.addEventListener('timeupdate', () => {
-      if (!audio.duration) return;
-      const pct = (audio.currentTime / audio.duration * 100).toFixed(1);
-      document.getElementById('progress-fill').style.width = pct + '%';
-      document.getElementById('time-cur').textContent = fmtTime(audio.currentTime);
-      document.getElementById('time-dur').textContent = fmtTime(audio.duration);
-    });
-
-    audio.addEventListener('loadedmetadata', () => {
-      document.getElementById('time-dur').textContent = fmtTime(audio.duration);
-      // fill duration in playlist row
-      const dur = document.getElementById('dur-' + trackIdx);
-      if (dur) dur.textContent = fmtTime(audio.duration);
-    });
 
     autoLoad();
 
