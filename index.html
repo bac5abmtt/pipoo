@@ -636,14 +636,15 @@
 
       html,
       body {
-        overflow: hidden;
-        height: 100%;
+        overflow: auto;
+        height: auto;
       }
 
       .shell {
         flex-direction: column;
-        height: 100vh;
-        height: 100dvh;
+        height: auto;
+        min-height: 100vh;
+        min-height: 100dvh;
       }
 
       .sidebar {
@@ -656,6 +657,10 @@
         flex-direction: row;
         flex-wrap: wrap;
         align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: var(--bg);
       }
 
       .logo {
@@ -686,25 +691,24 @@
         display: none;
       }
 
-      /* Main takes all remaining height */
       .main {
         flex: 1;
-        height: 0;
-        overflow: hidden;
+        height: auto;
+        overflow: visible;
       }
 
       .panel {
-        position: absolute;
-        inset: 0;
+        position: static;
         opacity: 0;
         pointer-events: none;
-        display: flex;
-        flex-direction: column;
+        display: none;
       }
 
       .panel.active {
         opacity: 1;
         pointer-events: all;
+        display: flex;
+        flex-direction: column;
       }
 
       .pan-head {
@@ -715,6 +719,13 @@
 
       .pan-title {
         font-size: 18px;
+      }
+
+      /* Hide arrows on mobile - scroll vertically instead */
+      .pan-arrows,
+      .sub-arrows,
+      .dots {
+        display: none !important;
       }
 
       .sub-bar {
@@ -729,52 +740,81 @@
         flex-shrink: 0;
       }
 
-      /* Sub-panels fill remaining space */
       .sub-panels {
-        flex: 1;
-        height: 0;
+        position: relative;
+        height: auto;
+        overflow: visible;
       }
 
       .sub-panel {
-        position: absolute;
-        inset: 0;
+        position: static;
+        opacity: 0;
+        pointer-events: none;
+        display: none;
       }
 
-      /* Gallery fills full height */
+      .sub-panel.active {
+        opacity: 1;
+        pointer-events: all;
+        display: block;
+      }
+
+      /* ── INSTAGRAM-STYLE VERTICAL FEED ── */
       .gallery-vp {
-        flex: 1;
-        height: 100%;
+        height: auto;
+        overflow: visible;
       }
 
       .gallery-strip {
-        padding: 8px;
-        gap: 8px;
-        height: 100%;
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        padding: 0;
+        gap: 2px;
+        transform: none !important;
+        will-change: auto;
+        transition: none;
       }
 
-      /* Each card = full width, full height → one image at a time */
       .card {
-        width: calc(100vw - 16px);
-        min-width: calc(100vw - 16px);
-        height: 100%;
+        width: 100%;
+        min-width: 100%;
+        height: auto;
+        aspect-ratio: 4 / 5;
         flex-shrink: 0;
+        background: #ECEAE6;
       }
 
       .card img {
         width: 100%;
         height: 100%;
         object-fit: cover;
+        filter: grayscale(0%);
       }
 
-      /* Đời sống gallery also fullscreen */
-      #panel-doi .gallery-vp {
-        flex: 1;
-        height: 0;
+      .card-cap {
+        opacity: 1;
+        background: linear-gradient(transparent 40%, rgba(17, 16, 16, .55));
+        padding: 20px 14px 12px;
       }
 
+      .card-cap span {
+        font-size: 13px;
+      }
+
+      /* Đời sống panel */
       #panel-doi {
+        display: none;
+      }
+
+      #panel-doi.active {
         display: flex;
         flex-direction: column;
+      }
+
+      #panel-doi .gallery-vp {
+        height: auto;
+        overflow: visible;
       }
 
       /* Lightbox optimized for mobile */
@@ -798,14 +838,13 @@
         right: 12px;
       }
 
-      /* About section scrollable */
+      /* About section */
       .about-body {
         flex-direction: column;
         padding: 24px 20px;
         gap: 20px;
         align-items: flex-start;
         overflow: auto;
-        flex: 1;
       }
 
       .about-photo {
@@ -823,9 +862,11 @@
         font-size: 13px;
       }
 
-      /* Dots closer to bottom */
-      .dots {
-        bottom: 12px;
+      /* Placeholder styles for mobile */
+      .ph {
+        width: 100% !important;
+        aspect-ratio: 4 / 5;
+        height: auto;
       }
     }
   </style>
