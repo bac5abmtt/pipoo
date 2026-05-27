@@ -1010,6 +1010,8 @@
 
   <script>
     /* ══ STATE ══ */
+    function isMobile() { return window.innerWidth <= 700; }
+
     const state = {
       g1: { pos: 0, total: 0, items: [] },
       g2: { pos: 0, total: 0, items: [] },
@@ -1088,6 +1090,11 @@
       const strip = document.getElementById(gid);
       const cards = strip.querySelectorAll('.card');
       if (!cards.length) return;
+      // On mobile: no horizontal transform, vertical feed
+      if (isMobile()) {
+        strip.style.transform = 'none';
+        return;
+      }
       let offset = 0;
       for (let i = 0; i < s.pos; i++) offset += cards[i].offsetWidth + 10;
       strip.style.transform = `translateX(-${offset}px)`;
